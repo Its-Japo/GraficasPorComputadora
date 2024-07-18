@@ -42,7 +42,7 @@ while isRunning:
 
     rend.glClear()
 
-    rend.glPoligono(poligono1)
+    rend.glFill(rend.glPoligono(poligono1))
 
 rend.glGenerateFrameBuffer("output.bmp")
 
