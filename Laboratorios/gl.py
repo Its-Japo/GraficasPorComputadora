@@ -95,11 +95,15 @@ class Renderer(object):
 
         y = y0
 
+        points: set = set()
+
         for x in range(x0, x1 + 1):
             if steep:
                 self.glPoint(y, x, color or self.currColor)
+                points.add((y, x))
             else:
                 self.glPoint(x, y, color or self.currColor)
+                points.add((x, y))
 
             offset += m
             if offset >= limit:
@@ -108,13 +112,62 @@ class Renderer(object):
                 else:
                     y -= 1
                 limit += 1
+        return points
 
     def glPoligono(self, listadoPuntos: list):
+        points: set = set()
         for i in range(len(listadoPuntos)):
-            self.glLine(
-                v0=listadoPuntos[i], v1=(
-                    listadoPuntos[(i + 1) % len(listadoPuntos)])
+
+            points.update(
+                self.glLine(
+                    v0=listadoPuntos[i],
+                    v1=(listadoPuntos[(i + 1) % len(listadoPuntos)]),
+                )
             )
+        return points
+
+    def glFill(self, points: set[tuple[int, int]]):
+        points = list(points)
+
+        sortedPoints = sorted(points, key=lambda point: (point[0], point[1]))
+
+        for i in range(len(sortedPoints) - 1):
+            if sortedPoints[i][0] == sortedPoints[i + 1][0]:
+                for j in range(sortedPoints[i][1] + 1, sortedPoints[i + 1][1]):
+                    # Menor X
+                    puntoX = [
+                        (x_i, y_i)
+                        for (x_i, y_i) in sortedPoints
+                        if x_i < sortedPoints[i][0] and y_i == j
+                    ]
+                    if len(puntoX) == 0:
+                        break
+                    # Mayor X
+                    puntoX = [
+                        (x_i, y_i)
+                        for (x_i, y_i) in sortedPoints
+                        if x_i > sortedPoints[i][0] and y_i == j
+                    ]
+                    if len(puntoX) == 0:
+                        break
+                    # Menor Y
+                    puntoY = [
+                        (x_i, y_i)
+                        for (x_i, y_i) in sortedPoints
+                        if x_i == sortedPoints[i][0] and y_i < j
+                    ]
+                    if len(puntoY) == 0:
+                        break
+                    # Mayor Y
+                    puntoY = [
+                        (x_i, y_i)
+                        for (x_i, y_i) in sortedPoints
+                        if x_i == sortedPoints[i][0] and y_i > j
+                    ]
+                    if len(puntoY) == 0:
+                        break
+
+                    self.glPoint(sortedPoints[i][0], j)
 
     def glGenerateFrameBuffer(self, filename):
         with open(filename, "wb") as file:
