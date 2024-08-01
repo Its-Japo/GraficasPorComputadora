@@ -19,13 +19,14 @@ isRunning = True
 rend = Renderer(screen)
 rend.vertexShader = vertexShader
 
-modelo1 = Model("ship.obj")
+modelo1 = Model("face.obj")
 modelo1.translate[0] = width / 2
 modelo1.translate[1] = height / 2
+modelo1.translate[2] = 0
 
-modelo1.scale[0] = 100
-modelo1.scale[1] = 100
-modelo1.scale[2] = 100
+modelo1.scale[0] = 10
+modelo1.scale[1] = 10
+modelo1.scale[2] = 10
 
 
 rend.models.append(modelo1)
@@ -42,6 +43,10 @@ while isRunning:
                 modelo1.rotate[1] += 10
             elif event.key == pygame.K_LEFT:
                 modelo1.rotate[1] -= 10
+            elif event.key == pygame.K_UP:
+                rend.camera.translate[1] += 10
+            elif event.key == pygame.K_DOWN:
+                rend.camera.translate[1] -= 10
 
             elif event.key == pygame.K_1:
                 rend.primitiveType = POINTS

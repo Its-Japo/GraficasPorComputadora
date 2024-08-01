@@ -1,6 +1,9 @@
-from mathlib import MatrixProduct, MatrixVectorProduct
-import numpy as np
 from pprint import pprint
+
+import numpy as np
+
+from mathlib import InverseMatrix, MatrixProduct, MatrixVectorProduct
+
 
 def test_MatrixProduct():
     A = [[1, -2, -1, 3], [-1, 3, -2, -2], [2, 0, 1, 1], [1, -2, 2, 3]]
@@ -10,11 +13,12 @@ def test_MatrixProduct():
 
     result = np.matrix(result)
     numpy = np.matrix(A) * np.matrix(B) * np.matrix(C)
-    pprint (result)
+    pprint(result)
     pprint(numpy)
 
     if result.all() == numpy.all():
         print("MatrixProduct passed")
+
 
 def test_MatrixVectorProduct():
     A = [[1, -2, -1, 3], [-1, 3, -2, -2], [2, 0, 1, 1], [1, -2, 2, 3]]
@@ -29,4 +33,17 @@ def test_MatrixVectorProduct():
     if result.all() == numpy.all():
         print("MatrixVectorProduct passed")
 
-test_MatrixVectorProduct()
+
+def test_InverseMatrix():
+    A = [[1, -2, -1, 3], [-1, 3, -2, -2], [2, 0, 1, 1], [1, -2, 2, 3]]
+    res = InverseMatrix(A)
+
+    res = np.matrix(res)
+    pprint(res)
+    numpy = np.linalg.inv(A)
+    pprint(numpy)
+    if res.all() == numpy.all():
+        print("Inverse passed")
+
+
+test_InverseMatrix()

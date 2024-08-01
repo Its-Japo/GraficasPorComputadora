@@ -20,6 +20,51 @@ def MatrixVectorProduct(A, v):
     return result
 
 
+def Eliminate(r1, r2, col, target=0):
+    fac = (r2[col] - target) / r1[col]
+    for i in range(len(r2)):
+        r2[i] -= fac * r1[i]
+
+
+def Gauss(a):
+    for i in range(len(a)):
+        if a[i][i] == 0:
+            for j in range(i + 1, len(a)):
+                if a[i][j] != 0:
+                    a[i], a[j] = a[j], a[i]
+                    break
+            else:
+                raise ValueError("cant inverse matrix")
+
+        for j in range(i + 1, len(a)):
+            Eliminate(a[i], a[j], i)
+
+    for i in range(len(a) - 1, -1, -1):
+        for j in range(i - 1, -1, -1):
+            Eliminate(a[i], a[j], i)
+
+    for i in range(len(a)):
+        Eliminate(a[i], a[i], i, target=1)
+
+    return a
+
+
+def InverseMatrix(A: list):
+    tmp = [[] for _ in A]
+
+    for i, j in enumerate(A):
+        assert len(j) == len(A)
+        tmp[i].extend(j + [0] * i + [1] + [0] * (len(A) - i - 1))
+
+    Gauss(tmp)
+
+    result = []
+    for i in range(len(tmp)):
+        result.append(tmp[i][len(tmp[i]) // 2:])
+
+    return result
+
+
 def TranslationMatrix(x, y, z):
     return [[1, 0, 0, x], [0, 1, 0, y], [0, 0, 1, z], [0, 0, 0, 1]]
 
