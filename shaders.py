@@ -12,19 +12,21 @@ def vertexShader(vertex, **kwargs):
     vt = [vertex[0], vertex[1], vertex[2], 1]
 
 
+
     vt = MatrixVectorProduct(
         MatrixProduct(
+            viewportMatrx,
             MatrixProduct(
+                projectionMatrx,
                 MatrixProduct(
-                    viewportMatrx,
-                    projectionMatrx
-                ),
-                viewMatrx
-            ),
-            modelMatrx
+                    viewMatrx,
+                    modelMatrx
+                )
+            )
         ),
         vt
     )
+
     """
     vt = MatrixVectorProduct(
                 MatrixProduct(

@@ -19,14 +19,16 @@ isRunning = True
 rend = Renderer(screen)
 rend.vertexShader = vertexShader
 
-modelo1 = Model("face.obj")
-modelo1.translate[0] = width / 2
-modelo1.translate[1] = height / 2
-modelo1.translate[2] = 0
+modelo1 = Model("sword.obj")
+modelo1.translate[0] = 0
+modelo1.translate[1] = 0
+modelo1.translate[2] = -50
 
-modelo1.scale[0] = 10
-modelo1.scale[1] = 10
-modelo1.scale[2] = 10
+modelo1.rotate[0] = 90
+
+modelo1.scale[0] = 0.7
+modelo1.scale[1] = 0.7
+modelo1.scale[2] = 0.7
 
 
 rend.models.append(modelo1)
@@ -44,9 +46,9 @@ while isRunning:
             elif event.key == pygame.K_LEFT:
                 modelo1.rotate[1] -= 10
             elif event.key == pygame.K_UP:
-                rend.camera.translate[1] += 10
+                rend.camera.translate[1] += 1
             elif event.key == pygame.K_DOWN:
-                rend.camera.translate[1] -= 10
+                rend.camera.translate[1] -= 1
 
             elif event.key == pygame.K_1:
                 rend.primitiveType = POINTS
@@ -61,6 +63,6 @@ while isRunning:
     clock.tick(60)
 
 
-rend.glGenerateFrameBuffer("output.bmp")
+rend.glGenerateFrameBuffer("top.bmp")
 
 pygame.quit()

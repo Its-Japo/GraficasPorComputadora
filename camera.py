@@ -19,6 +19,4 @@ class Camera(object):
 
         inverseCamMatrix = InverseMatrix(camMatrix)
 
-        print(inverseCamMatrix)
-
         return inverseCamMatrix

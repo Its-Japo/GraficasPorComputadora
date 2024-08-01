@@ -38,7 +38,7 @@ class Renderer(object):
         self.glClearColor(0, 0, 0)
         self.glClear()
 
-        self.primitiveType = POINTS
+        self.primitiveType = LINES
 
         self.vertexShader = None
 
@@ -283,6 +283,7 @@ class Renderer(object):
         if self.primitiveType == POINTS:
             for point in buffer:
                 self.glPoint(int(point[0]), int(point[1]))
+                print((int(point[0]), int(point[1])))
 
         elif self.primitiveType == LINES:
             for i in range(0, len(buffer), 3):

@@ -9,16 +9,24 @@ def test_MatrixProduct():
     A = [[1, -2, -1, 3], [-1, 3, -2, -2], [2, 0, 1, 1], [1, -2, 2, 3]]
     B = [[3, 1, 3, 0], [1, 2, 3, 4], [2, 1, 3, -1], [1, 1, 0, 1]]
     C = [[1, 0, 1, 1], [2, 1, 3, 0], [3, 2, 0, 3], [2, 0, 1, 0]]
-    result = MatrixProduct(A, MatrixProduct(B, C))
+    D = [
+        [4, 7, 2, 3],
+        [0, 5, 9, 1],
+        [6, 8, 2, 4],
+        [3, 1, 7, 5]
+
+    ]
+    result = MatrixProduct(A, MatrixProduct(B, MatrixProduct(C, D)))
 
     result = np.matrix(result)
-    numpy = np.matrix(A) * np.matrix(B) * np.matrix(C)
+    numpy = np.matrix(A) * np.matrix(B) * np.matrix(C) * np.matrix(D)
     pprint(result)
     pprint(numpy)
 
     if result.all() == numpy.all():
         print("MatrixProduct passed")
 
+test_MatrixProduct()
 
 def test_MatrixVectorProduct():
     A = [[1, -2, -1, 3], [-1, 3, -2, -2], [2, 0, 1, 1], [1, -2, 2, 3]]
@@ -33,6 +41,7 @@ def test_MatrixVectorProduct():
     if result.all() == numpy.all():
         print("MatrixVectorProduct passed")
 
+test_MatrixVectorProduct()
 
 def test_InverseMatrix():
     A = [[1, -2, -1, 3], [-1, 3, -2, -2], [2, 0, 1, 1], [1, -2, 2, 3]]
