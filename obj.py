@@ -1,3 +1,4 @@
+
 class Obj(object):
 	def __init__(self, filename):
 		# Asumiendo que el archivo es un formato .obj
@@ -13,6 +14,10 @@ class Obj(object):
 			# Si la linea no cuenta con un prefijo y un valor,
 			# seguimos a la siguiente la linea
 
+			# Este comando elimina espacios en blanco innecesarios
+			# al final de un texto
+			line = line.rstrip()
+
 			try:
 				prefix, value = line.split(" ", 1)
 			except:
@@ -27,7 +32,7 @@ class Obj(object):
 				
 			elif prefix == "vt": # Coordenadas de textura
 				vts = list(map(float,value.split(" ")))
-				self.texcoords.append(vts)
+				self.texcoords.append([vts[0],vts[1]])
 				
 			elif prefix == "vn": # Normales
 				norm = list(map(float,value.split(" ")))
@@ -40,5 +45,3 @@ class Obj(object):
 					vert = list(map(int, vert.split("/")))
 					face.append(vert)
 				self.faces.append(face)
-
-				#self.faces.append([list(map(int, vert.split("/"))) for vert in value.split(" ")])

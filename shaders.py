@@ -1,43 +1,45 @@
-from mathlib import MatrixProduct, MatrixVectorProduct
-
-
 def vertexShader(vertex, **kwargs):
-    # Para cada vertice
-
     modelMatrx = kwargs["modelMatrix"]
     viewMatrx = kwargs["viewMatrix"]
     projectionMatrx = kwargs["projectionMatrix"]
     viewportMatrx = kwargs["viewportMatrix"]
-
-    vt = [vertex[0], vertex[1], vertex[2], 1]
-
-
-
-    vt = MatrixVectorProduct(
-        MatrixProduct(
-            viewportMatrx,
-            MatrixProduct(
-                projectionMatrx,
-                MatrixProduct(
-                    viewMatrx,
-                    modelMatrx
-                )
-            )
-        ),
-        vt
-    )
-
-    """
-    vt = MatrixVectorProduct(
-                MatrixProduct(
-                    viewMatrx,
-                    modelMatrx
-                ),
-        vt
-    )
-    """
-    vt = [vt[0] / vt[3], vt[1] / vt[3], vt[2] / vt[3]]
-
+    
+    vt = [vertex[0],
+          vertex[1],
+          vertex[2],
+          1]
+    
+    vt = viewportMatrx * projectionMatrx * viewMatrx * modelMatrx * vt
+    
+    vt = [vt[0] / vt[3],
+          vt[1] / vt[3],
+          vt[2] / vt[3]]
+    
     print(vt)
 
     return vt
+
+
+def fragmentShader(**kwargs):
+    A, B, C = kwargs["verts"]
+    u, v, w = kwargs["bCoords"]
+    texture = kwargs["texture"]
+
+    vtA = [A[3], A[4]]
+    vtB = [B[3], B[4]]
+    vtC = [C[3], C[4]]
+    
+    
+    r = 1
+    g = 1
+    b = 1
+
+    vtP = [u * vtA[0] + v * vtB[0] + w * vtC[0],
+           u * vtA[1] + v * vtB[1] + w * vtC[1]]
+    if texture:
+        texColor = texture.getColor(vtP[0], vtP[1])
+        r *= texColor[0]
+        g *= texColor[1]
+        b *= texColor[2]
+
+    return [r,g,b]

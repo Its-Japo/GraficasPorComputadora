@@ -1,22 +1,20 @@
-from mathlib import (InverseMatrix, MatrixProduct, RotateMatrix,
-                     TranslationMatrix)
+from mathlib import *
 
 
 class Camera(object):
     def __init__(self):
-
         self.translate = [0, 0, 0]
         self.rotate = [0, 0, 0]
 
     def GetViewMatrix(self):
-        translateMat = TranslationMatrix(
-            self.translate[0], self.translate[1], self.translate[2]
-        )
+        translateMat = TranslationMatrix(self.translate[0],
+                                         self.translate[1],
+                                         self.translate[2])
 
-        rotMat = RotateMatrix(self.rotate[0], self.rotate[1], self.rotate[2])
+        rotateMat = RotationMatrix(self.rotate[0],
+                                 self.rotate[1],
+                                 self.rotate[2])
 
-        camMatrix = MatrixProduct(rotMat, translateMat)
+        camMatrix = translateMat * rotateMat
 
-        inverseCamMatrix = InverseMatrix(camMatrix)
-
-        return inverseCamMatrix
+        return camMatrix.inversa()
